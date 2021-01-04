@@ -8,8 +8,6 @@ using System.Threading.Tasks;
 
 namespace MvcMovie.Models
 {
-
-
     public static class SeedData
     {
         public static void Initialize(IServiceProvider serviceProvider)

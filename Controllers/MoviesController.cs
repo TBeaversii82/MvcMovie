@@ -21,32 +21,33 @@ namespace MvcMovie.Controllers
         }
 
         // GET: Movies
-        public async Task<IActionResult> Index(string movieGenre, string searchString)
+        public async Task<IActionResult> Index(string movieGenre, string SearchString)
         {
+            //Use LINQ to get list of genres
             IQueryable<string> genreQuery = from m in _context.Movie
                                             orderby m.Genre
                                             select m.Genre;
 
             var movies = from m in _context.Movie
                          select m;
-            if (!String.IsNullOrEmpty(searchString))
+
+            if (!String.IsNullOrEmpty(SearchString))
             {
-                movies = movies.Where(s => s.Title.Contains(searchString));
+                movies = movies.Where(s => s.Title.Contains(SearchString));
             }
 
-            if (!string.IsNullOrEmpty(movieGenre))
-            { 
+            if (!String.IsNullOrEmpty(movieGenre))
+            {
                 movies = movies.Where(x => x.Genre == movieGenre);
             }
 
             var movieGenreVM = new MovieGenreViewModel
             {
                 Genres = new SelectList(await genreQuery.Distinct().ToListAsync()),
+                Movies = await movies.ToListAsync()
             };
 
             return View(movieGenreVM);
-
-           
         }
 
         // GET: Movies/Details/5
@@ -110,7 +111,7 @@ namespace MvcMovie.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,ReleaseDate,Genre,Price")] Movie movie)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,ReleaseDate,Genre,Price,Rating")] Movie movie)
         {
             if (id != movie.Id)
             {
@@ -173,10 +174,5 @@ namespace MvcMovie.Controllers
         {
             return _context.Movie.Any(e => e.Id == id);
         }
-    }
-
-    internal class MovieGenreViewModel
-    {
-        public SelectList Genres { get; set; }
     }
 }
