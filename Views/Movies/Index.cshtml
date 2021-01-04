@@ -13,14 +13,10 @@
 
 <form asp-controller="Movies" asp-action="Index" method="get">
     <p>
-
         <select asp-for="MovieGenre" asp-items="Model.Genres">
             <option value="">All</option>
         </select>
         Title: <input type="text" asp-for="SearchString" />
-        <input type="submit" value="Filter" />
-
-        Title: <input type="text" name="SearchString" />
         <input type="submit" value="Filter" />
     </p>
 
@@ -68,9 +64,9 @@
                     @Html.DisplayFor(modelItem => item.Rating)
                 </td>
                 <td>
-                    <a href="/Movies/Edit/4">Edit</a> |
-                    <a href="/Movies/Details/4">Details</a> |
-                    <a href="/Movies/Delete/4"></a>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
                 </td>
             </tr>
         }
